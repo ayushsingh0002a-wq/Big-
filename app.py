@@ -37,14 +37,13 @@ def detect_streak(numbers):
             break
 
     return last_type, streak
-
-
-def predict(numbers):
-    def generate_result():
+def generate_result():
     num = random.randint(0, 9)
     size = classify(num)
     color = "Green" if size == "BIG" else "Red"
     return num, size, color
+
+def predict(numbers):
     numbers = get_last_numbers(numbers)
 
     probs = analyze(numbers)
