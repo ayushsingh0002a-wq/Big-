@@ -40,6 +40,11 @@ def detect_streak(numbers):
 
 
 def predict(numbers):
+    def generate_result():
+    num = random.randint(0, 9)
+    size = classify(num)
+    color = "Green" if size == "BIG" else "Red"
+    return num, size, color
     numbers = get_last_numbers(numbers)
 
     probs = analyze(numbers)
@@ -126,3 +131,18 @@ if col1.button("Predict"):
 if col2.button("Clear"):
     st.session_state.history = []
     st.success("History cleared!")
+st.markdown("---")
+st.subheader("⚡ One Tap Result")
+
+if st.button("🎲 Generate"):
+    num, size, color = generate_result()
+
+    st.markdown("### 🎯 Result")
+    st.write(f"Number: {num}")
+
+    if size == "BIG":
+        st.markdown(f"<div class='big'>{size}</div>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<div class='small'>{size}</div>", unsafe_allow_html=True)
+
+    st.write(f"Colour: {color}")
