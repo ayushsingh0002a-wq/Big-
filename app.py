@@ -56,8 +56,37 @@ def predict(numbers):
     return random.choice(["BIG", "SMALL"])
 
 
-# UI
-st.set_page_config(page_title="Big Small Predictor", layout="centered")
+# ---------------- UI ----------------
+
+st.set_page_config(page_title="Big Small Predictor PRO", layout="centered")
+
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #0e1117;
+        color: white;
+    }
+    .card {
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #1c1f26;
+        margin-bottom: 10px;
+    }
+    .big {
+        color: #00ffcc;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .small {
+        color: #ff4b4b;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 st.title("🎯 Big Small Predictor PRO")
 
@@ -66,7 +95,9 @@ if "history" not in st.session_state:
 
 user_input = st.text_input("Enter numbers (0-9 space separated)")
 
-if st.button("Predict"):
+col1, col2 = st.columns(2)
+
+if col1.button("Predict"):
     try:
         numbers = list(map(int, user_input.split()))
         st.session_state.history.extend(numbers)
@@ -75,20 +106,23 @@ if st.button("Predict"):
         probs = analyze(last_numbers)
         result = predict(last_numbers)
 
-        st.subheader("📊 Last 10 Analysis")
+        st.markdown("<div class='card'>📊 Analysis</div>", unsafe_allow_html=True)
         st.write(f"BIG: {probs['BIG']:.2f}")
         st.write(f"SMALL: {probs['SMALL']:.2f}")
 
-        st.subheader("🔮 Prediction")
-        st.success(result)
+        st.markdown("<div class='card'>🔮 Prediction</div>", unsafe_allow_html=True)
 
-        st.subheader("📜 History")
+        if result == "BIG":
+            st.markdown(f"<div class='big'>{result}</div>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div class='small'>{result}</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='card'>📜 History</div>", unsafe_allow_html=True)
         st.write(st.session_state.history)
 
     except:
-        st.error("Invalid input! Enter like: 1 5 3 8")
+        st.error("Invalid input! Use format: 1 5 3 8")
 
-if st.button("Clear History"):
+if col2.button("Clear"):
     st.session_state.history = []
     st.success("History cleared!")
-
